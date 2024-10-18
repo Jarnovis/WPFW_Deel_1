@@ -1,10 +1,17 @@
-﻿namespace WPFW_Deel_1.codes.ORM;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-public class Grades
+namespace WPFW_Deel_1.codes.ORM;
+
+public class Grade
 {
-    private int value { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+    public int value { get; private set; }
+    public int studentId { get; set; }
+    public Student student { get; set; }
 
-    public Grades(int value)
+    public Grade(int value)
     {
         this.value = value;
     }
