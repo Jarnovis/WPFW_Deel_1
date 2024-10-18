@@ -1,6 +1,9 @@
-﻿using WPFW_Deel_1.codes.Klinkt_Beter;
+﻿using WPFW_Deel_1.codes.Async;
+using WPFW_Deel_1.codes.Klinkt_Beter;
+using WPFW_Deel_1.codes.TelWoorden;
 using WPFW_Deel_1.Hexa;
 using WPFW_Deel_1.Sorts;
+
 
 public class Program
 {
@@ -9,8 +12,12 @@ public class Program
         /*runHexaDecimal();
         runSortBubble();
         runSortInt();
-        */
         runKlinktBeter();
+        runTelWoorden();
+        */
+        
+        runGokAsync();
+        
     }
 
     private static void runHexaDecimal()
@@ -65,5 +72,18 @@ public class Program
         rf.Read(bestand);
         rf.getWoorden();
         rf.draaiOm();
+    }
+
+    private static void runTelWoorden()
+    {
+        TelWoorden tw = new TelWoorden();
+        tw.verwerkBestand();
+    }
+
+    private static void runGokAsync()
+    {
+        GokAsync ga = new GokAsync();
+        GokAsync.VerwerkBestand();
+        ga.gok();
     }
 }
