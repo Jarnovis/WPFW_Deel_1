@@ -1,13 +1,16 @@
-﻿using WPFW_Deel_1.Hexa;
+﻿using WPFW_Deel_1.codes.Klinkt_Beter;
+using WPFW_Deel_1.Hexa;
 using WPFW_Deel_1.Sorts;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        runHexaDecimal();
+        /*runHexaDecimal();
         runSortBubble();
         runSortInt();
+        */
+        runKlinktBeter();
     }
 
     private static void runHexaDecimal()
@@ -52,5 +55,13 @@ public class Program
         }
         
         Console.WriteLine();
+    }
+
+    private static void runKlinktBeter()
+    {
+        ReadFile rf = new ReadFile();
+
+        rf.Read();
+        rf.getWoorden();
     }
 }
