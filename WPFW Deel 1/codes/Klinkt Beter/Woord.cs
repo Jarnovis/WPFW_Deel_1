@@ -15,7 +15,7 @@ public abstract class Woord
         check();
     }
 
-    protected void check()
+    private void check()
     {
         foreach (char c in tekst)
         {

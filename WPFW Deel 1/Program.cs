@@ -59,9 +59,11 @@ public class Program
 
     private static void runKlinktBeter()
     {
+        Bestand bestand = new Bestand("../../../../WPFW Deel 1/TextFiles/Groot.txt");
         ReadFile rf = new ReadFile();
 
-        rf.Read();
+        rf.Read(bestand);
         rf.getWoorden();
+        rf.draaiOm();
     }
 }
