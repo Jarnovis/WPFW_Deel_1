@@ -1,0 +1,12 @@
+{
+    "profiles": {
+      "WPFW Deel 1": {
+        "commandName": "Project",
+        "launchBrowser": true,
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      }
+    }
+  }
+  

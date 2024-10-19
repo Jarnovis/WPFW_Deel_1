@@ -1,4 +1,9 @@
-﻿using WPFW_Deel_1.codes.API;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using WPFW_Deel_1.codes.API;
 using WPFW_Deel_1.codes.Async;
 using WPFW_Deel_1.codes.Klinkt_Beter;
 using WPFW_Deel_1.codes.ORM;
@@ -9,9 +14,48 @@ using WPFW_Deel_1.Sorts;
 
 public class Program
 {
+    private static void configure(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Add services to the container
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+            });
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddDbContext<MovieDataBaseContext>();
+    
+
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+
+        app.UseRouting();
+        app.MapControllers(); // Map controller routes
+        
+
+        app.Run();
+    }
 
     public static void Main(string[] args)
     {
+        configure(args);
         /*runHexaDecimal();
         runSortBubble();
         runSortInt();
@@ -20,9 +64,8 @@ public class Program
         runGokAsync();
         feedDbSchool();
         runLINQ();
-        */
-
         feedDbMovieDataBase();
+        */
     }
 
     private static void runHexaDecimal()
