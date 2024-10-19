@@ -1,4 +1,4 @@
-public class Movie
+public class MovieLINQ
 {
     public string Title { get; set; }
     public int Year { get; set; }
