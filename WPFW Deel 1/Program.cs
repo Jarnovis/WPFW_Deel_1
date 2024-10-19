@@ -8,6 +8,7 @@ using WPFW_Deel_1.Sorts;
 
 public class Program
 {
+
     public static void Main(string[] args)
     {
         /*runHexaDecimal();
@@ -16,10 +17,9 @@ public class Program
         runKlinktBeter();
         runTelWoorden();
         runGokAsync();
-        */
-        
         feedDbSchool();
-        
+        */
+        runLINQ();
     }
 
     private static void runHexaDecimal()
@@ -134,13 +134,37 @@ public class Program
         
         Henk.grades.Add(henkGrade);
 
+        var Flip = new Student("Flip", "Flip@gmail.com");
+
+
         dbc.Student.Add(Jan);
         dbc.Student.Add(Henk);
+        dbc.Student.Add(Flip);
         dbc.Teacher.Add(DocAardrijkskunde);
         dbc.Teacher.Add(DocHandvaardigheid);
         dbc.Teacher.Add(DocAardrijkskunde2);
 
         dbc.SaveChanges();
+
+    }
+
+    private static void runLINQ()
+    {
+        Setup.Opdracht1();
+        Setup.Opdracht2();
+        Setup.Opdracht3();
+        Setup.Opdracht4();
+        Setup.Opdracht5();
+        Setup.Opdracht6();
+        Setup.Opdracht7();
+
+        ORMLINQ ol = new ORMLINQ();
+
+        ol.studentenMetCijfers();
+        ol.aantalTeachers();
+        ol.studentGeenDocent();
+        ol.studentSorted();
+        ol.followingHandvaardigheid();
 
     }
     

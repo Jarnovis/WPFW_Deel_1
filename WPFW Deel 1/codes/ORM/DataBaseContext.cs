@@ -17,7 +17,5 @@ public class DataBaseContext : DbContext
     
     public DbSet<Teacher> Teacher { get; set; } 
     public DbSet<Student> Student { get; set; }
-    public DbSet<User> User { get; set; }
     public DbSet<Grade> Grade { get; set; }
-    public DbSet<GradeStudent> GradeStudent { get; set; }
 }

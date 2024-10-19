@@ -7,9 +7,8 @@ public class Grade
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public int value { get; private set; }
     public int studentId { get; set; }
-    public Student student { get; set; }
+    public int value { get; private set; }
 
     public Grade(int value)
     {
