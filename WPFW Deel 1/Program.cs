@@ -1,5 +1,6 @@
 ﻿using WPFW_Deel_1.codes.Async;
 using WPFW_Deel_1.codes.Klinkt_Beter;
+using WPFW_Deel_1.codes.ORM;
 using WPFW_Deel_1.codes.TelWoorden;
 using WPFW_Deel_1.Hexa;
 using WPFW_Deel_1.Sorts;
@@ -7,6 +8,7 @@ using WPFW_Deel_1.Sorts;
 
 public class Program
 {
+
     public static void Main(string[] args)
     {
         /*runHexaDecimal();
@@ -14,10 +16,10 @@ public class Program
         runSortInt();
         runKlinktBeter();
         runTelWoorden();
-        */
-        
         runGokAsync();
-        
+        feedDbSchool();
+        */
+        runLINQ();
     }
 
     private static void runHexaDecimal()
@@ -86,4 +88,84 @@ public class Program
         GokAsync.VerwerkBestand();
         ga.gok();
     }
+
+    private static void feedDbSchool()
+    {
+        DataBaseContext dbc = new DataBaseContext();
+        
+        var DocAardrijkskunde = new Teacher("Aardrijkskunde", "AardrijskundeTeacher1@gmail.com");
+        var DocHandvaardigheid = new Teacher("Handvaardigheid", "HandvaardigheidTeacher@gmail.com");
+        var DocAardrijkskunde2 = new Teacher("Aardrijkskunde", "AardrijksundeTeacher2@gmail.com");
+        var Jan = new Student("Jan", "Jan@gmail.com")
+        {
+            grades = new List<Grade>(),
+            teachers = new List<Teacher>()
+        };
+        
+       Jan.teachers.Add(DocAardrijkskunde);
+       Jan.teachers.Add(DocHandvaardigheid);
+
+        var janGrade = new Grade(5)
+        {
+            studentId = Jan.Id
+        };
+
+        var janGrade2 = new Grade(7)
+        {
+            studentId = Jan.Id
+        };
+        
+        Jan.grades.Add(janGrade);
+        Jan.grades.Add(janGrade2);
+        
+        var Henk = new Student("Henk", "Henk@gmail.com")
+        {
+            grades = new List<Grade>(),
+            teachers = new List<Teacher>()
+        };
+        
+        Henk.teachers.Add(DocAardrijkskunde2);
+        Henk.teachers.Add(DocHandvaardigheid);
+
+        var henkGrade = new Grade(9)
+        {
+            studentId = Henk.Id
+        };
+        
+        Henk.grades.Add(henkGrade);
+
+        var Flip = new Student("Flip", "Flip@gmail.com");
+
+
+        dbc.Student.Add(Jan);
+        dbc.Student.Add(Henk);
+        dbc.Student.Add(Flip);
+        dbc.Teacher.Add(DocAardrijkskunde);
+        dbc.Teacher.Add(DocHandvaardigheid);
+        dbc.Teacher.Add(DocAardrijkskunde2);
+
+        dbc.SaveChanges();
+
+    }
+
+    private static void runLINQ()
+    {
+        Setup.Opdracht1();
+        Setup.Opdracht2();
+        Setup.Opdracht3();
+        Setup.Opdracht4();
+        Setup.Opdracht5();
+        Setup.Opdracht6();
+        Setup.Opdracht7();
+
+        ORMLINQ ol = new ORMLINQ();
+
+        ol.studentenMetCijfers();
+        ol.aantalTeachers();
+        ol.studentGeenDocent();
+        ol.studentSorted();
+        ol.followingHandvaardigheid();
+
+    }
+    
 }
