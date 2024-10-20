@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,12 +9,7 @@ namespace WPFW_Deel_1.codes.API.Controllers;
 
 public class MovieController : ControllerBase
 {
-    private readonly MovieDataBaseContext context;
-
-    public MovieController (MovieDataBaseContext context)
-    {
-        this.context = context;
-    }
+    private readonly MovieDataBaseContext context = new MovieDataBaseContext();
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
@@ -24,7 +20,7 @@ public class MovieController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Movie>> GetMovie(int id)
     {
-        var movie = await context.movies.Include(m => m.director).FirstOrDefaultAsync(m => m.id == id);
+        var movie = await context.movies.Include(m => m.review).Include(m => m.director).FirstOrDefaultAsync(m => m.id == id);
 
         if (movie == null)
         {
@@ -34,41 +30,63 @@ public class MovieController : ControllerBase
         return movie;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<Movie>> PostMovie(Movie movie)
-    {
-        context.movies.Add(movie);
-        await context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetMovie), new {id = movie.id}, movie);
-    }
 
-    [HttpPut("{id}")]
-        public async Task<IActionResult> PutMovie(int id, Movie movie)
+    [HttpPost("{title}/{year}/{director}")]
+        public async Task<IResult> PostMovie(string title, int year, string director)
         {
-            if (id != movie.id)
-            {
-                return BadRequest();
-            }
 
-            context.Entry(movie).State = EntityState.Modified;
+            if (!movieExists(title, year))
+            {
+                Director isDirector;
 
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (GetMovie(id).Equals(NotFound()))
+                if (!directorExists(director))
                 {
-                    return NotFound();
+                    isDirector = createDirector(director);
                 }
                 else
                 {
-                    throw;
+                    isDirector = context.directors.Where(d => d.name.ToLower().Equals(director.ToLower())).FirstOrDefault();
                 }
-            }
 
-            return NoContent();
+                Movie movie = new Movie()
+                {
+                    title = title,
+                    year = year,
+                    director = new List<Director>()
+                };
+
+                movie.director.Add(isDirector);
+
+                await context.movies.AddAsync(movie);
+                await context.SaveChangesAsync();
+
+                return Results.Ok(new {message = $"{title} is succesfully added to the db"});
+            }
+            
+            return Results.Ok(new {message = $"{title} does allready exists in the db with the year {year}"});
         }
+
+        private bool movieExists(string title, int year)
+        {
+            return context.movies.Any(m => m.title.Trim().ToLower().Equals(title.ToLower()) && m.year == year);
+        }
+
+        private bool directorExists(string name)
+        {
+            return context.directors.Any(d => d.name.Trim().ToLower().Equals(name.ToLower()));
+        }
+
+        private Director createDirector(string name)
+        {
+            Director director = new Director()
+            {
+                name = name
+            };
+
+            context.directors.Add(director);
+
+            return director;
+        }
+        
 
 }

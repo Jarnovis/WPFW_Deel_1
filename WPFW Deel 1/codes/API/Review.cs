@@ -22,5 +22,4 @@ public class Review
 
     [ForeignKey("movie")]
     public int movieId {get; set;}
-    public Movie movie {get; set;}
 }
