@@ -1,4 +1,10 @@
-﻿using WPFW_Deel_1.codes.Async;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using WPFW_Deel_1.codes.API;
+using WPFW_Deel_1.codes.Async;
 using WPFW_Deel_1.codes.Klinkt_Beter;
 using WPFW_Deel_1.codes.ORM;
 using WPFW_Deel_1.codes.TelWoorden;
@@ -8,9 +14,48 @@ using WPFW_Deel_1.Sorts;
 
 public class Program
 {
+    private static void configure(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Add services to the container
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+            });
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddDbContext<MovieDataBaseContext>();
+    
+
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+
+        app.UseRouting();
+        app.MapControllers(); // Map controller routes
+        
+
+        app.Run();
+    }
 
     public static void Main(string[] args)
     {
+        configure(args);
         /*runHexaDecimal();
         runSortBubble();
         runSortInt();
@@ -18,8 +63,9 @@ public class Program
         runTelWoorden();
         runGokAsync();
         feedDbSchool();
-        */
         runLINQ();
+        feedDbMovieDataBase();
+        */
     }
 
     private static void runHexaDecimal()
@@ -166,6 +212,99 @@ public class Program
         ol.studentSorted();
         ol.followingHandvaardigheid();
 
+    }
+
+    private static void feedDbMovieDataBase()
+    {
+        MovieDataBaseContext mdbc = new MovieDataBaseContext();
+
+        var Anthony = new Director()
+        {
+            name = "Anthony C. Ferrante"
+        };
+
+        var Todd = new Director()
+        {
+            name = "Todd Phillips"
+        };
+
+        var sharknado = new Movie()
+        {
+            title = "Sharknado",
+            year = 2013,
+            director = new List<Director>(),
+            review = new List<Review>()
+        };
+
+        var sharknado2 = new Movie()
+        {
+            title = "Sharknado 2: The Second One",
+            year = 2014,
+            director = new List<Director>(),
+            review = new List<Review>()
+        };
+
+        var sharknado3 = new Movie()
+        {
+            title = "Sharknado 3: Oh Hell No!",
+            year = 2015,
+            director = new List<Director>(),
+            review = new List<Review>()
+        };
+
+        var joker = new Movie()
+        {
+            title = "Joker",
+            year = 2019,
+            director = new List<Director>(),
+            review = new List<Review>()
+        };
+
+        var joker2 = new Movie()
+        {
+            title = "Joker: Folie à Deux",
+            year = 2024,
+            director = new List<Director>(),
+            review = new List<Review>()
+        };
+
+        var reviewJoker1 = new Review()
+        {
+            rating = 9,
+            description = "It was a master peace",
+            userName = "JokerLover123",
+            createdAt = DateTime.Today,
+            movieId = joker.id
+        };
+
+        var reviewJoker2 = new Review()
+        {
+            rating = 1,
+            description = "Dogshit. How did they fuck up. The first movie was so fucking good. I was hyped to watch part 2, but now I need to bleech my eyes. FUCKING DISGUSTING MOVIE. I wont even let my worst enemy watch this.",
+            userName = "JokerLover123",
+            createdAt = DateTime.Today,
+            movieId = joker2.id
+        };
+
+        sharknado.director.Add(Anthony);
+        sharknado2.director.Add(Anthony);
+        sharknado3.director.Add(Anthony);
+        joker.director.Add(Todd);
+        joker2.director.Add(Todd);
+
+        joker.review.Add(reviewJoker1);
+        joker2.review.Add(reviewJoker2);
+
+        mdbc.directors.Add(Anthony);
+        mdbc.directors.Add(Todd);
+
+        mdbc.movies.Add(sharknado);
+        mdbc.movies.Add(sharknado2);
+        mdbc.movies.Add(sharknado3);
+        mdbc.movies.Add(joker);
+        mdbc.movies.Add(joker2);
+
+        mdbc.SaveChanges();
     }
     
 }
