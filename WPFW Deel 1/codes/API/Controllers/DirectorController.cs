@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WPFW_Deel_1.codes.API.DTO;
 
 namespace WPFW_Deel_1.codes.API.Controllers;
 
@@ -11,13 +12,19 @@ public class DirectorController : ControllerBase
     private readonly MovieDataBaseContext context = new MovieDataBaseContext();
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Director>>> GetDirectors()
+    public async Task<ActionResult<IEnumerable<DirectorDTO>>> GetDirectors()
     {
-        return await context.directors.Include(d => d.movies).ToListAsync();
+        var directors = await context.directors.Include(d => d.movies).Select(d => new DirectorDTO
+        {
+            name = d.name,
+            movies = d.movies.Select(m => m.title).ToList()
+        }).ToListAsync();
+
+        return Ok(directors);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Director>> GetDirector(int id)
+    public async Task<ActionResult<DirectorDTO>> GetDirector(int id)
     {
         var result = await context.directors.Include(d => d.movies).FirstOrDefaultAsync(d => d.id == id);
 
@@ -26,7 +33,13 @@ public class DirectorController : ControllerBase
             return NotFound();
         }
 
-        return result;
+        var directorDTO = new DirectorDTO
+        {
+            name = result.name,
+            movies = result.movies.Select(m => m.title).ToList()
+        };
+
+        return directorDTO;
     }
 
     [HttpPost("Name")]
