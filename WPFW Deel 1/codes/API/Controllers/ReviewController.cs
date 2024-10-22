@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WPFW_Deel_1.codes.API.DTO;
 
 namespace WPFW_Deel_1.codes.API.Controllers;
 
@@ -12,13 +13,19 @@ public class ReviewController : ControllerBase
     private readonly MovieDataBaseContext context = new MovieDataBaseContext();
 
     [HttpGet]
-    public async Task<IEnumerable<Review>> getReviews()
+    public async Task<IEnumerable<ReviewDTO>> getReviews()
     {
-        return await context.reviews.ToListAsync();
+        return context.reviews.Select(r => new ReviewDTO
+        {
+            rating = r.rating,
+            description = r.description,
+            userName = r.userName,
+            movieId = r.movieId
+        }).ToList();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Review>> getReview(int id)
+    public async Task<ActionResult<ReviewDTO>> getReview(int id)
     {
         var review = await context.reviews.FirstOrDefaultAsync(r => r.id == id);
 
@@ -27,7 +34,15 @@ public class ReviewController : ControllerBase
             return NotFound();
         }
 
-        return review;
+
+
+        return new ReviewDTO
+        {
+            rating = review.rating,
+            description = review.description,
+            userName = review.userName,
+            movieId = review.movieId
+        };
     }
 
     [HttpPost("{rating}/{description}/{userName}/{movieTitle}")]

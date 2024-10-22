@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WPFW_Deel_1.codes.API.DTO;
 
 namespace WPFW_Deel_1.codes.API.Controllers;
 
@@ -12,13 +13,23 @@ public class MovieController : ControllerBase
     private readonly MovieDataBaseContext context = new MovieDataBaseContext();
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
+    public async Task<ActionResult<IEnumerable<MovieDTO>>> GetMovies()
     {
-        return await context.movies.Include(m => m.director).Include(m => m.review).ToListAsync();
+        var movies = await context.movies.Include(m => m.director).Include(m => m.review).ToListAsync();
+
+        var result = movies.Select(m => new MovieDTO
+        {
+            title = m.title,
+            year = m.year,
+            director = m.director.Select(d => d.name).ToList(),
+            review = m.review.Select(r => r.description).ToList()
+        });
+
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Movie>> GetMovie(int id)
+    public async Task<ActionResult<MovieDTO>> GetMovie(int id)
     {
         var movie = await context.movies.Include(m => m.review).Include(m => m.director).FirstOrDefaultAsync(m => m.id == id);
 
@@ -27,7 +38,15 @@ public class MovieController : ControllerBase
             return NotFound();
         }
 
-        return movie;
+        MovieDTO result = new MovieDTO
+        {
+            title = movie.title,
+            year = movie.year,
+            director = movie.director.Select(d => d.name).ToList(),
+            review = movie.review.Select(r => r.description).ToList()
+            };
+
+        return Ok(result);
     }
 
 
