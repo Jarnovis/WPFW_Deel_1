@@ -29,7 +29,7 @@ jobs:
     - name: Install .NET Core SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x   # Specify the version of .NET SDK you need (8.0.x)
+        dotnet-version: 8.0.10
 
     - name: Cache NuGet packages
       uses: actions/cache@v4
@@ -42,11 +42,6 @@ jobs:
       if: runner.os == 'Windows'
       uses: microsoft/setup-msbuild@v2
 
-    # Install specific version of Entity Framework Core Tools (you can downgrade if needed)
-    - name: Install specific EF Core Tools version
-      run: |
-        dotnet add package Microsoft.EntityFrameworkCore.Tools --version 7.0.10  # or 7.x if you are downgrading to avoid conflicts
-        dotnet restore ${{ env.Solution_Name }} --verbosity normal
     
     # Restore the application (Cross-platform)
     - name: Restore the application
