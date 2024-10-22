@@ -45,6 +45,8 @@ public class ReviewController : ControllerBase
         };
     }
 
+    // For usage of adding the ReviewDTO, you need to have this class allready made,
+    // because of swagger, you do not have a ReviewDTO object avalable
     [HttpPost("{rating}/{description}/{userName}/{movieTitle}")]
     public async Task<IResult> PostReview(int rating, string description, string userName, string movieTitle)
     {

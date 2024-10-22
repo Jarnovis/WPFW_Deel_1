@@ -49,7 +49,8 @@ public class MovieController : ControllerBase
         return Ok(result);
     }
 
-
+    // For usage of adding the MovieDTO, you need to have this class allready made,
+    // because of swagger, you do not have a MovieDTO object avalable
     [HttpPost("{title}/{year}/{director}")]
         public async Task<IResult> PostMovie(string title, int year, string director)
         {
