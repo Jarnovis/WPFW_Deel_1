@@ -1,0 +1,39 @@
+.body {
+    background-color: rgb(230, 217, 217);
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;                      
+    justify-content: space-between;     
+    align-items: center;                
+    
+    min-height: 40px;                  
+    max-height: 5vh;                   
+    width: 100%;                        
+    background-color: black;            
+    padding: 0 20px;                   
+}
+
+header a {
+    text-decoration: none;              
+    font-size: 30px;                    
+    color: white;                    
+    margin: 0 5vw;                     
+}
+
+#left {
+    display: flex;                      
+    align-items: center;                
+}
+
+#right {
+    display: flex;                      
+    align-items: center;                
+}
+
+#h1Home {
+    color: red;                       
+    text-align: center;                
+}
