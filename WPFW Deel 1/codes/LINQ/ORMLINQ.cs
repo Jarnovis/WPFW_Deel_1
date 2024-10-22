@@ -1,6 +1,6 @@
 using System.Data.Common;
 using WPFW_Deel_1.codes.ORM;
-
+namespace WPFW_Deel_1.codes.LINQ;
 public class ORMLINQ
 {
     private DataBaseContext dataBaseContext = new DataBaseContext();

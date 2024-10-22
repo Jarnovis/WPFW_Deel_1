@@ -42,6 +42,8 @@ public class DirectorController : ControllerBase
         return directorDTO;
     }
 
+    // For usage of adding the DirectorDTO, you need to have this class allready made,
+    // because of swagger, you do not have a DirectorDTO object avalable
     [HttpPost("Name")]
     public async Task<IResult> CreateDirector(string name)
     {

@@ -10,6 +10,7 @@ using WPFW_Deel_1.codes.ORM;
 using WPFW_Deel_1.codes.TelWoorden;
 using WPFW_Deel_1.Hexa;
 using WPFW_Deel_1.Sorts;
+using WPFW_Deel_1.codes.LINQ;
 
 
 public class Program

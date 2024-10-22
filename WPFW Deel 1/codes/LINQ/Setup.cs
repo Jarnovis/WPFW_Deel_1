@@ -1,5 +1,6 @@
 using System.Formats.Tar;
 using System.Numerics;
+namespace WPFW_Deel_1.codes.LINQ;
 
 public class Setup
 {
