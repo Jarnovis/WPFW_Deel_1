@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      Solution_Name: $"WPFW Deel 1".sln                  # Replace with your solution name
+      Solution_Name: "WPFW Deel 1.sln"    # Ensure this is your correct solution file name
 
     steps:
     - name: Checkout
@@ -29,7 +29,7 @@ jobs:
     - name: Install .NET Core SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x   # Make sure you're targeting .NET 8.0.x
+        dotnet-version: 8.0.x   # Specify the version of .NET SDK you need (8.0.x)
 
     - name: Cache NuGet packages
       uses: actions/cache@v4
@@ -42,19 +42,19 @@ jobs:
       if: runner.os == 'Windows'
       uses: microsoft/setup-msbuild@v2
 
+    # Install specific version of Entity Framework Core Tools (you can downgrade if needed)
+    - name: Install specific EF Core Tools version
+      run: |
+        dotnet add package Microsoft.EntityFrameworkCore.Tools --version 7.0.10  # or 7.x if you are downgrading to avoid conflicts
+        dotnet restore ${{ env.Solution_Name }} --verbosity normal
+    
     # Restore the application (Cross-platform)
     - name: Restore the application
       run: |
-        dotnet restore ${{ env.Solution_Name }} --configfile nuget.config /p:Configuration=${{ matrix.configuration }} --verbosity normal
+        dotnet restore ${{ env.Solution_Name }} /p:Configuration=${{ matrix.configuration }}
       env:
         Configuration: ${{ matrix.configuration }}
 
-    # Optionally, you can force the installation of the desired version of EF Core Tools
-    - name: Install Entity Framework Core Tools version 7.x.x (Example)
-      run: |
-        dotnet add package Microsoft.EntityFrameworkCore.Tools --version 7.0.10
-        dotnet restore
-    
     # Execute unit tests (Cross-platform)
     - name: Execute Unit Tests
       run: dotnet test --no-restore --configuration ${{ matrix.configuration }}
