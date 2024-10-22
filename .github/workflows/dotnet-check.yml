@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      Solution_Name: "WPFW Deel 1.sln"    # Ensure this is your correct solution file name
+      Solution_Name: "WPFW Deel 1.sln"'    # Ensure this is your correct solution file name
 
     steps:
     - name: Checkout
