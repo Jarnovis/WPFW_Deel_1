@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      Solution_Name: WPFW Deel 1.sln                  # Replace with your solution name
+      Solution_Name: $"WPFW Deel 1".sln                  # Replace with your solution name
 
     steps:
     - name: Checkout
