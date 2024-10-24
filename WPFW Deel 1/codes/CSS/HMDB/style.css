@@ -1,0 +1,74 @@
+body {
+    background-color: rgb(230, 217, 217);
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+header {
+    background-color: rgb(230, 217, 217);
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+
+    display: flex;                      
+    justify-content: space-between;     
+    align-items: center;                
+    
+    min-height: 40px;                  
+    max-height: 5vh;                   
+    width: 100%;                        
+    background-color: black;            
+    padding: 0 20px;                   
+}
+
+header a {
+    text-decoration: none;              
+    font-size: 30px;                    
+    color: white;                    
+    margin: 0 5vw;                     
+}
+
+#left {
+    display: flex;                      
+    align-items: center;                
+}
+
+#right {
+    display: flex;                      
+    align-items: center;                
+}
+
+#h1Center {
+    color: red;                       
+    text-align: center;                
+}
+
+#h2Center
+{
+    text-align: center;
+}
+
+#recommended
+{
+    display: flex;            
+    flex-wrap: wrap;            
+    justify-content: space-around; 
+    margin: 20px; 
+}
+
+#poster
+{
+    text-align: center;
+}
+
+footer {
+    background-color: black;
+    color: white; /* Ensure text is visible */
+    text-align: center; /* Center the footer content */
+    padding: 10px 0; /* Adjust padding to reduce space */
+    margin: 0; /* Remove any default margin */
+    position: relative; /* Optional, depending on your layout needs */
+}
