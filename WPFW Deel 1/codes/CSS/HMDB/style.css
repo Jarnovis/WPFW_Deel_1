@@ -1,10 +1,18 @@
-.body {
+body {
     background-color: rgb(230, 217, 217);
     margin: 0;
     padding: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
-.header {
+header {
+    background-color: rgb(230, 217, 217);
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+
     display: flex;                      
     justify-content: space-between;     
     align-items: center;                
@@ -33,7 +41,34 @@ header a {
     align-items: center;                
 }
 
-#h1Home {
+#h1Center {
     color: red;                       
     text-align: center;                
+}
+
+#h2Center
+{
+    text-align: center;
+}
+
+#recommended
+{
+    display: flex;            
+    flex-wrap: wrap;            
+    justify-content: space-around; 
+    margin: 20px; 
+}
+
+#poster
+{
+    text-align: center;
+}
+
+footer {
+    background-color: black;
+    color: white; /* Ensure text is visible */
+    text-align: center; /* Center the footer content */
+    padding: 10px 0; /* Adjust padding to reduce space */
+    margin: 0; /* Remove any default margin */
+    position: relative; /* Optional, depending on your layout needs */
 }
